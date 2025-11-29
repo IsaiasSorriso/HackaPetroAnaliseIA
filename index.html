@@ -6,6 +6,21 @@
     <title>Análise de Bioincrustração de Navios</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        .selector-container {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        #ship-selector {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 80%;
+            max-width: 400px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -14,10 +29,15 @@
     </header>
 
     <main>
+        <div class="selector-container">
+            <label for="ship-selector">Selecione o Navio:</label>
+            <select id="ship-selector"></select>
+        </div>
+        
         <section class="ship-details-card">
-            <h2>⚓ Dados do Navio</h2>
+            <h2 id="ship-title">⚓ Dados do Navio</h2>
             <table id="ship-data-table">
-                </table>
+            </table>
         </section>
         
         <section class="dashboard-container">
@@ -43,8 +63,8 @@
                 <div class="prediction-content">
                     <p id="prediction-message">Carregando análise...</p>
                     <div class="time-to-event">
-                        <p>Cuidado (Amarelo): <span id="time-to-care">--</span> meses</p>
-                        <p>Urgência (Vermelho): <span id="time-to-urgent">--</span> meses</p>
+                        <p>Cuidado (Amarelo): <span id="time-to-care">--</span></p>
+                        <p>Urgência (Vermelho): <span id="time-to-urgent">--</span></p>
                     </div>
                 </div>
             </div>
