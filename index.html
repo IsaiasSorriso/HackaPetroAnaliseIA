@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise de Bioincrustração de Navios</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h1>Monitoramento de Bioincrustração de Navios</h1>
+        <p>Análise Preditiva do Estado do Casco</p>
+    </header>
+
+    <main>
+        <section class="ship-details-card">
+            <h2>⚓ Dados do Navio</h2>
+            <table id="ship-data-table">
+                </table>
+        </section>
+        
+        <section class="dashboard-container">
+            <div class="card analysis-card">
+                <h2>📈 Análise Atual</h2>
+                <div class="thermometer-gauge">
+                    <div id="gauge-ring" class="gauge-ring">
+                        <div id="gauge-needle" class="gauge-needle"></div>
+                    </div>
+                    <div id="status-text" class="status-text"></div>
+                    <p class="status-label">Estado Atual do Casco</p>
+                </div>
+                
+                <div class="sensor-data">
+                    <h3>Dados de Sensores (Simulados)</h3>
+                    <p>Temperatura da Água: <span id="water-temp">--</span> °C</p>
+                    <p>Rugosidade do Casco: <span id="hull-roughness">--</span> µm</p>
+                </div>
+            </div>
+
+            <div class="card prediction-card">
+                <h2>⏳ Previsão de Formação de Cracas</h2>
+                <div class="prediction-content">
+                    <p id="prediction-message">Carregando análise...</p>
+                    <div class="time-to-event">
+                        <p>Cuidado (Amarelo): <span id="time-to-care">--</span> meses</p>
+                        <p>Urgência (Vermelho): <span id="time-to-urgent">--</span> meses</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Sistema de Monitoramento Naval</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

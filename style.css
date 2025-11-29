@@ -1,0 +1,204 @@
+/* Reset Básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f4f7f6; /* Fundo suave */
+    color: #333;
+    line-height: 1.6;
+}
+
+header {
+    background-color: #004d7a; /* Azul marinho escuro */
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    margin-bottom: 5px;
+    font-size: 2em;
+}
+
+main {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 20px auto;
+}
+
+/* Cartões e Layout */
+.ship-details-card, .dashboard-container {
+    background-color: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+    margin-bottom: 30px;
+}
+
+.dashboard-container {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.analysis-card, .prediction-card {
+    flex: 1;
+    min-width: 300px;
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+}
+
+.analysis-card h2, .prediction-card h2, .ship-details-card h2 {
+    color: #004d7a;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+/* Tabela de Dados do Navio */
+#ship-data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    font-size: 0.95em;
+}
+
+#ship-data-table th, #ship-data-table td {
+    border: 1px solid #ddd;
+    padding: 12px 15px;
+    text-align: left;
+}
+
+#ship-data-table th {
+    background-color: #e6f7ff; /* Azul claro para cabeçalho */
+    color: #004d7a;
+    font-weight: bold;
+}
+
+/* Estilo do Termômetro/Gauge */
+.thermometer-gauge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0 30px;
+}
+
+.gauge-ring {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    /* Estilo base, a cor será alterada pelo JS */
+    border: 15px solid #ccc;
+    transition: border-color 0.5s ease-in-out;
+}
+
+.gauge-ring::before {
+    content: '';
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: white;
+    z-index: 1;
+}
+
+.gauge-needle {
+    width: 5px;
+    height: 5px;
+    background-color: #333;
+    border-radius: 50%;
+    position: absolute;
+    z-index: 2;
+    transform: rotate(135deg) translate(0, -60px); /* Posição inicial (verde) */
+    transform-origin: 50% 50%;
+    transition: transform 1s ease-in-out, background-color 0.5s ease-in-out;
+}
+
+/* Classes para as cores do Termômetro */
+.status-green {
+    border-color: #28a745; /* Verde para Ótimo */
+}
+.status-green .gauge-needle {
+    background-color: #28a745;
+}
+
+.status-yellow {
+    border-color: #ffc107; /* Amarelo para Cuidado */
+}
+.status-yellow .gauge-needle {
+    background-color: #ffc107;
+}
+
+.status-red {
+    border-color: #dc3545; /* Vermelho para Urgência */
+}
+.status-red .gauge-needle {
+    background-color: #dc3545;
+}
+
+/* Textos de Status e Previsão */
+.status-text {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-top: 10px;
+    color: #333;
+    transition: color 0.5s ease-in-out;
+}
+
+.status-label {
+    font-size: 0.9em;
+    color: #666;
+}
+
+.prediction-content {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+#prediction-message {
+    font-size: 1.1em;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.time-to-event p {
+    margin: 5px 0;
+    font-size: 1em;
+    color: #555;
+}
+
+.time-to-event span {
+    font-weight: bold;
+    color: #004d7a;
+}
+
+.sensor-data {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px dashed #ccc;
+}
+
+.sensor-data h3 {
+    margin-bottom: 10px;
+    color: #004d7a;
+}
+
+/* Rodapé */
+footer {
+    text-align: center;
+    padding: 15px 0;
+    background-color: #e0e0e0;
+    color: #555;
+    margin-top: 30px;
+}
