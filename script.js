@@ -48,6 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const gaugeNeedle = document.getElementById('gauge-needle');
     const statusText = document.getElementById('status-text');
     const predictionMessage = document.getElementById('prediction-message');
+    const actionArea = document.getElementById('action-area'); // Novo elemento
     const timeToCare = document.getElementById('time-to-care');
     const timeToUrgent = document.getElementById('time-to-urgent');
     const waterTempSpan = document.getElementById('water-temp');
@@ -69,6 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let urgentTime = 0;
         let message = '';
         let statusClass = '';
+        let actionHtml = ''; // Conteúdo HTML para o botão de ação
 
         // Lógica de Estado (Termômetro)
         if (foulingIndex < 35) { // Verde: Ótimo
@@ -77,21 +79,31 @@ document.addEventListener('DOMContentLoaded', () => {
             statusClass = 'status-green';
             careTime = 2.5;
             urgentTime = 4.5;
-            message = `🎉 Muito bem! O navio está em um estado Ótimo. Com base nos dados, temos aproximadamente ${careTime.toFixed(1)} meses para ele entrar no estado de Cuidado (Amarelo) e ${urgentTime.toFixed(1)} meses para Urgência (Vermelho).`;
+            message = `🎉 Muito bem! O navio está em um estado **ótimo**. Com base nos dados, temos aproximadamente **${careTime.toFixed(1)} meses** para ele entrar no estado de Cuidado (Amarelo) e **${urgentTime.toFixed(1)} meses** para Urgência (Vermelho).`;
         } else if (foulingIndex < 70) { // Amarelo: Cuidado
             status = 'CUIDADO';
             needleAngle = 0; 
             statusClass = 'status-yellow';
             careTime = 0.5;
             urgentTime = 2.0;
-            message = `⚠️ Atenção! O navio está no estado de Cuidado. Recomenda-se o planejamento de inspeção. Faltam aproximadamente ${urgentTime.toFixed(1)} meses para atingir o estado de Urgência.`;
+            message = `⚠️ Atenção! O navio está no estado de **Cuidado**. Recomenda-se o planejamento de inspeção. Faltam aproximadamente **${urgentTime.toFixed(1)} meses** para atingir o estado de Urgência.`;
+            // Ação para CUIDADO (Amarelo)
+            actionHtml = `
+                <span>Que tal agendar uma avaliação?</span>
+                <button class="action-btn yellow-btn">Agendar Avaliação</button>
+            `;
         } else { // Vermelho: Urgência
             status = 'URGÊNCIA';
             needleAngle = -135; 
             statusClass = 'status-red';
             careTime = 0;
             urgentTime = 0.25;
-            message = `🚨 CRÍTICO! O navio está no estado de URGÊNCIA. É necessária uma intervenção imediata para limpeza do casco, evitando perda significativa de eficiência e aumento de consumo de combustível.`;
+            message = `🚨 CRÍTICO! O navio está no estado de **URGÊNCIA**. É necessária uma intervenção imediata para limpeza do casco, evitando perda significativa de eficiência e aumento de consumo de combustível.`;
+            // Ação para URGÊNCIA (Vermelho)
+            actionHtml = `
+                <span>Entre em contato urgente com a equipe de remoção de cracas!</span>
+                <button class="action-btn red-btn">Contato Urgente</button>
+            `;
         }
         
         return {
@@ -101,17 +113,17 @@ document.addEventListener('DOMContentLoaded', () => {
             careTime,
             urgentTime,
             message,
+            actionHtml, // Adicionado o novo HTML
             simulatedWaterTemp,
             simulatedHullRoughness
         };
     }
     
-    // Função para popular a tabela de dados do navio
+    // Função para popular a tabela de dados do navio (mantida)
     function populateShipTable(shipData) {
         let html = '<thead><tr>';
         let valuesHtml = '<tbody><tr>';
         
-        // Remove as chaves de análise para exibir apenas as informações do navio
         const keysToSkip = ['foulingIndex', 'simulatedWaterTemp', 'simulatedHullRoughness'];
         
         for (const key in shipData) {
@@ -134,20 +146,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 5. Atualiza o Dashboard na UI
         
-        // Remove classes antigas e adiciona a nova classe de cor
-        gaugeRing.className = 'gauge-ring'; // Reset
+        // Atualiza anel e ponteiro
+        gaugeRing.className = 'gauge-ring'; 
         gaugeRing.classList.add(analysis.statusClass);
-
-        // Define a posição do ponteiro
         gaugeNeedle.style.transform = `rotate(${analysis.needleAngle}deg) translate(0, -60px)`;
         
-        // Atualiza os textos de status
+        // Atualiza textos de status e mensagem
         statusText.textContent = analysis.status;
-        // NOTE: Em um cenário real, você teria que garantir que o CSS para a classe status-X esteja carregado
-        // Aqui, vou manter a cor fixa para evitar problemas de escopo no getComputedStyle
         statusText.style.color = analysis.statusClass === 'status-green' ? '#28a745' : analysis.statusClass === 'status-yellow' ? '#ffc107' : '#dc3545';
-        
         predictionMessage.innerHTML = analysis.message;
+        
+        // NOVO: Atualiza a área de ação/contato
+        actionArea.innerHTML = analysis.actionHtml;
         
         // Atualiza os tempos de previsão
         timeToCare.textContent = analysis.careTime > 0 ? `${analysis.careTime.toFixed(1)} meses` : 'IMEDIATO';
@@ -161,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
         populateShipTable(ship);
     }
 
-    // --- Inicialização e Eventos ---
+    // --- Inicialização e Eventos (mantidos) ---
 
     // Popula o seletor de navios
     shipsData.forEach((ship, index) => {

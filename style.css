@@ -202,3 +202,46 @@ footer {
     color: #555;
     margin-top: 30px;
 }
+
+/* Estilos para a Área de Ação */
+.action-area {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+    display: flex; /* Permite que o span e o botão fiquem lado a lado */
+    align-items: center;
+    justify-content: space-between; /* Espaço entre o texto e o botão */
+}
+
+.action-area span {
+    font-weight: bold;
+    font-size: 1em;
+    color: #333; /* Cor neutra para o texto */
+}
+
+.action-btn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    color: white;
+    transition: background-color 0.3s;
+}
+
+.yellow-btn {
+    background-color: #ffc107; /* Cor Amarela do status */
+    color: #333;
+}
+
+.yellow-btn:hover {
+    background-color: #e0a800;
+}
+
+.red-btn {
+    background-color: #dc3545; /* Cor Vermelha do status */
+}
+
+.red-btn:hover {
+    background-color: #c82333;
+}
