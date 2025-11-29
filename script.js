@@ -77,21 +77,21 @@ document.addEventListener('DOMContentLoaded', () => {
             statusClass = 'status-green';
             careTime = 2.5;
             urgentTime = 4.5;
-            message = `🎉 Muito bem! O navio está em um estado **ótimo**. Com base nos dados, temos aproximadamente **${careTime.toFixed(1)} meses** para ele entrar no estado de Cuidado (Amarelo) e **${urgentTime.toFixed(1)} meses** para Urgência (Vermelho).`;
+            message = `🎉 Muito bem! O navio está em um estado Ótimo. Com base nos dados, temos aproximadamente ${careTime.toFixed(1)} meses para ele entrar no estado de Cuidado (Amarelo) e ${urgentTime.toFixed(1)} meses para Urgência (Vermelho).`;
         } else if (foulingIndex < 70) { // Amarelo: Cuidado
             status = 'CUIDADO';
             needleAngle = 0; 
             statusClass = 'status-yellow';
             careTime = 0.5;
             urgentTime = 2.0;
-            message = `⚠️ Atenção! O navio está no estado de **Cuidado**. Recomenda-se o planejamento de inspeção. Faltam aproximadamente **${urgentTime.toFixed(1)} meses** para atingir o estado de Urgência.`;
+            message = `⚠️ Atenção! O navio está no estado de Cuidado. Recomenda-se o planejamento de inspeção. Faltam aproximadamente ${urgentTime.toFixed(1)} meses para atingir o estado de Urgência.`;
         } else { // Vermelho: Urgência
             status = 'URGÊNCIA';
             needleAngle = -135; 
             statusClass = 'status-red';
             careTime = 0;
             urgentTime = 0.25;
-            message = `🚨 CRÍTICO! O navio está no estado de **URGÊNCIA**. É necessária uma intervenção imediata para limpeza do casco, evitando perda significativa de eficiência e aumento de consumo de combustível.`;
+            message = `🚨 CRÍTICO! O navio está no estado de URGÊNCIA. É necessária uma intervenção imediata para limpeza do casco, evitando perda significativa de eficiência e aumento de consumo de combustível.`;
         }
         
         return {
