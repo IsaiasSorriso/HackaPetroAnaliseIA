@@ -99,9 +99,9 @@ document.addEventListener('DOMContentLoaded', () => {
             statusClass = 'status-red';
             careTime = 0;
             urgentTime = 0.25;
-            message = `🚨 CRÍTICO! O navio está no estado de **URGÊNCIA**. É necessária uma intervenção imediata para limpeza do casco, evitando perda significativa de eficiência e aumento de consumo de combustível.`;
+            message = `🚨 CRÍTICO! O navio está no estado de URGÊNCIA. É necessária uma intervenção imediata para limpeza do casco, evitando perda significativa de eficiência, aumento de consumo de combustível e pagamento de multa`;
             actionHtml = `
-                <span>Necessário Escalamento Urgente do Caso.</span>
+                <span>Necessário Escalonamento Urgente do Caso.</span>
                 <button class="action-btn red-btn">Escalonar</button>
             `;
         }
