@@ -1,49 +1,304 @@
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Dados dos Navios (JSON/Array de Objetos)
-    const shipsData = [
-        {
-            'Nome do Navio': 'Oceanus Explorer',
-            'Classe': 'Panamax',
-            'Tipo': 'Graneleiro',
-            'Porte Bruto': '80,000 DWT',
-            'Comprimento total(m)': '230.0 m',
-            'Boca (m)': '32.3 m',
-            'Calado (m)': '14.0 m',
-            'Pontal (m)': '18.0 m',
-            'foulingIndex': 20, // Ótimo (Verde) -> 20%
-            'simulatedWaterTemp': 22.5, // °C
-            'simulatedHullRoughness': 100, // µm
-            'imageUrl': 'image2.png' // Nome de arquivo que você confirmou
-        },
-        {
-            'Nome do Navio': 'Mariner Voyager',
-            'Classe': 'Aframax',
-            'Tipo': 'Minério',
-            'Porte Bruto': '180,000 DWT',
-            'Comprimento total(m)': '290.0 m',
-            'Boca (m)': '45.0 m',
-            'Calado (m)': '17.0 m',
-            'Pontal (m)': '22.0 m',
-            'foulingIndex': 55, // Cuidado (Amarelo) -> 55%
-            'simulatedWaterTemp': 28.0, 
-            'simulatedHullRoughness': 250, // µm
-            'imageUrl': 'image3.png' // Nome de arquivo que você confirmou
-        },
-        {
-            'Nome do Navio': 'Global Tanker VII',
-            'Classe': 'Suezmax',
-            'Tipo': 'Petroleiro',
-            'Porte Bruto': '150,000 DWT',
-            'Comprimento total(m)': '275.0 m',
-            'Boca (m)': '48.0 m',
-            'Calado (m)': '16.0 m',
-            'Pontal (m)': '20.0 m',
-            'foulingIndex': 85, // Urgência (Vermelho) -> 85%
-            'simulatedWaterTemp': 30.5, 
-            'simulatedHullRoughness': 450, // µm
-            'imageUrl': 'image1.png' // Nome de arquivo que você confirmou
-        }
-    ];
+    // 1. Dados dos Navios (JSON/Array de Objetos) - ATUALIZADO COM OS DADOS DO CSV
+const shipsData = [
+    {
+        'Nome do Navio': 'RAFAEL SANTOS',
+        'Classe': 'Suezmax',
+        'Tipo': 'Petroleiro',
+        'Porte Bruto': '156628 DWT',
+        'Comprimento total(m)': '274.2 m',
+        'Boca (m)': '48.0 m',
+        'Calado (m)': '17.0 m',
+        'Pontal (m)': '23.2 m',
+        'foulingIndex': 50, // Cuidado
+        'simulatedWaterTemp': 29.0, // °C
+        'simulatedHullRoughness': 350, // µm
+        'imageUrl': 'image1.png'
+    },
+    {
+        'Nome do Navio': 'HENRIQUE ALVES',
+        'Classe': 'Suezmax',
+        'Tipo': 'Petroleiro',
+        'Porte Bruto': '157700 DWT',
+        'Comprimento total(m)': '274.2 m',
+        'Boca (m)': '48.0 m',
+        'Calado (m)': '17.0 m',
+        'Pontal (m)': '23.2 m',
+        'foulingIndex': 80, // Urgência
+        'simulatedWaterTemp': 30.0, 
+        'simulatedHullRoughness': 450, 
+        'imageUrl': 'image3.png'
+    },
+    {
+        'Nome do Navio': 'VICTOR OLIVEIRA',
+        'Classe': 'Suezmax',
+        'Tipo': 'Petroleiro',
+        'Porte Bruto': '156492 DWT',
+        'Comprimento total(m)': '274.2 m',
+        'Boca (m)': '48.0 m',
+        'Calado (m)': '17.0 m',
+        'Pontal (m)': '23.2 m',
+        'foulingIndex': 25, // Ótimo
+        'simulatedWaterTemp': 28.0, 
+        'simulatedHullRoughness': 200, 
+        'imageUrl': 'image2.png'
+    },
+    {
+        'Nome do Navio': 'FELIPE RIBEIRO',
+        'Classe': 'Suezmax',
+        'Tipo': 'Petroleiro',
+        'Porte Bruto': '157700 DWT',
+        'Comprimento total(m)': '274.2 m',
+        'Boca (m)': '48.0 m',
+        'Calado (m)': '17.0 m',
+        'Pontal (m)': '23.2 m',
+        'foulingIndex': 60, // Cuidado
+        'simulatedWaterTemp': 29.5, 
+        'simulatedHullRoughness': 380, 
+        'imageUrl': 'image1.png'
+    },
+    {
+        'Nome do Navio': 'GISELLE CARVALHO',
+        'Classe': 'Suezmax',
+        'Tipo': 'Petroleiro',
+        'Porte Bruto': '156504 DWT',
+        'Comprimento total(m)': '274.2 m',
+        'Boca (m)': '48.0 m',
+        'Calado (m)': '17.0 m',
+        'Pontal (m)': '23.2 m',
+        'foulingIndex': 30, // Ótimo
+        'simulatedWaterTemp': 28.5, 
+        'simulatedHullRoughness': 250, 
+        'imageUrl': 'image2.png'
+    },
+    {
+        'Nome do Navio': 'RAUL MARTINS',
+        'Classe': 'Suezmax',
+        'Tipo': 'Petroleiro',
+        'Porte Bruto': '156523 DWT',
+        'Comprimento total(m)': '274.2 m',
+        'Boca (m)': '48.0 m',
+        'Calado (m)': '17.0 m',
+        'Pontal (m)': '23.2 m',
+        'foulingIndex': 70, // Urgência
+        'simulatedWaterTemp': 30.2, 
+        'simulatedHullRoughness': 420, 
+        'imageUrl': 'image3.png'
+    },
+    {
+        'Nome do Navio': 'PAULO MOURA',
+        'Classe': 'Suezmax',
+        'Tipo': 'Petroleiro',
+        'Porte Bruto': '156547 DWT',
+        'Comprimento total(m)': '274.2 m',
+        'Boca (m)': '48.0 m',
+        'Calado (m)': '17.0 m',
+        'Pontal (m)': '23.2 m',
+        'foulingIndex': 40, // Cuidado
+        'simulatedWaterTemp': 29.2, 
+        'simulatedHullRoughness': 300, 
+        'imageUrl': 'image1.png'
+    },
+    {
+        'Nome do Navio': 'MARCOS CAVALCANTI',
+        'Classe': 'Suezmax',
+        'Tipo': 'Petroleiro',
+        'Porte Bruto': '156733 DWT',
+        'Comprimento total(m)': '274.2 m',
+        'Boca (m)': '48.0 m',
+        'Calado (m)': '17.0 m',
+        'Pontal (m)': '23.2 m',
+        'foulingIndex': 90, // Urgência
+        'simulatedWaterTemp': 31.0, 
+        'simulatedHullRoughness': 500, 
+        'imageUrl': 'image3.png'
+    },
+    {
+        'Nome do Navio': 'DANIEL PEREIRA',
+        'Classe': 'Aframax',
+        'Tipo': 'Petroleiro',
+        'Porte Bruto': '114562 DWT',
+        'Comprimento total(m)': '249.0 m',
+        'Boca (m)': '43.8 m',
+        'Calado (m)': '15.0 m',
+        'Pontal (m)': '21.0 m',
+        'foulingIndex': 75, // Urgência
+        'simulatedWaterTemp': 27.5, 
+        'simulatedHullRoughness': 400, 
+        'imageUrl': 'image3.png'
+    },
+    {
+        'Nome do Navio': 'CARLA SILVA',
+        'Classe': 'Aframax',
+        'Tipo': 'Petroleiro',
+        'Porte Bruto': '114365 DWT',
+        'Comprimento total(m)': '249.0 m',
+        'Boca (m)': '43.8 m',
+        'Calado (m)': '15.0 m',
+        'Pontal (m)': '21.0 m',
+        'foulingIndex': 15, // Ótimo
+        'simulatedWaterTemp': 26.0, 
+        'simulatedHullRoughness': 180, 
+        'imageUrl': 'image2.png'
+    },
+    {
+        'Nome do Navio': 'RENATO GOMES',
+        'Classe': 'Aframax',
+        'Tipo': 'Petroleiro',
+        'Porte Bruto': '114481 DWT',
+        'Comprimento total(m)': '249.0 m',
+        'Boca (m)': '43.8 m',
+        'Calado (m)': '15.0 m',
+        'Pontal (m)': '21.0 m',
+        'foulingIndex': 55, // Cuidado
+        'simulatedWaterTemp': 28.5, 
+        'simulatedHullRoughness': 350, 
+        'imageUrl': 'image1.png'
+    },
+    {
+        'Nome do Navio': 'GABRIELA MARTINS',
+        'Classe': 'Aframax',
+        'Tipo': 'Petroleiro',
+        'Porte Bruto': '114441 DWT',
+        'Comprimento total(m)': '249.0 m',
+        'Boca (m)': '43.8 m',
+        'Calado (m)': '15.0 m',
+        'Pontal (m)': '21.0 m',
+        'foulingIndex': 85, // Urgência
+        'simulatedWaterTemp': 29.0, 
+        'simulatedHullRoughness': 480, 
+        'imageUrl': 'image3.png'
+    },
+    {
+        'Nome do Navio': 'RODRIGO PINHEIRO',
+        'Classe': 'Aframax',
+        'Tipo': 'Petroleiro',
+        'Porte Bruto': '114434 DWT',
+        'Comprimento total(m)': '249.0 m',
+        'Boca (m)': '43.8 m',
+        'Calado (m)': '15.0 m',
+        'Pontal (m)': '21.0 m',
+        'foulingIndex': 20, // Ótimo
+        'simulatedWaterTemp': 26.5, 
+        'simulatedHullRoughness': 220, 
+        'imageUrl': 'image2.png'
+    },
+    {
+        'Nome do Navio': 'EDUARDO COSTA',
+        'Classe': 'MR 2',
+        'Tipo': 'Petroleiro',
+        'Porte Bruto': '48501 DWT',
+        'Comprimento total(m)': '182.85 m',
+        'Boca (m)': '32.2 m',
+        'Calado (m)': '12.8 m',
+        'Pontal (m)': '18.6 m',
+        'foulingIndex': 10, // Ótimo
+        'simulatedWaterTemp': 25.0, 
+        'simulatedHullRoughness': 150, 
+        'imageUrl': 'image2.png'
+    },
+    {
+        'Nome do Navio': 'THIAGO FERNANDES',
+        'Classe': 'MR 2',
+        'Tipo': 'Petroleiro',
+        'Porte Bruto': '48573 DWT',
+        'Comprimento total(m)': '182.85 m',
+        'Boca (m)': '32.2 m',
+        'Calado (m)': '12.8 m',
+        'Pontal (m)': '18.6 m',
+        'foulingIndex': 45, // Cuidado
+        'simulatedWaterTemp': 27.0, 
+        'simulatedHullRoughness': 280, 
+        'imageUrl': 'image1.png'
+    },
+    {
+        'Nome do Navio': 'ROMARIO SILVA',
+        'Classe': 'MR 2',
+        'Tipo': 'Petroleiro',
+        'Porte Bruto': '48449 DWT',
+        'Comprimento total(m)': '182.85 m',
+        'Boca (m)': '32.2 m',
+        'Calado (m)': '12.8 m',
+        'Pontal (m)': '18.6 m',
+        'foulingIndex': 90, // Urgência
+        'simulatedWaterTemp': 29.0, 
+        'simulatedHullRoughness': 490, 
+        'imageUrl': 'image3.png'
+    },
+    {
+        'Nome do Navio': 'LUCAS MENDONÇA',
+        'Classe': 'MR 2',
+        'Tipo': 'Petroleiro',
+        'Porte Bruto': '48573 DWT',
+        'Comprimento total(m)': '182.85 m',
+        'Boca (m)': '32.2 m',
+        'Calado (m)': '12.8 m',
+        'Pontal (m)': '18.6 m',
+        'foulingIndex': 30, // Ótimo
+        'simulatedWaterTemp': 26.5, 
+        'simulatedHullRoughness': 200, 
+        'imageUrl': 'image2.png'
+    },
+    {
+        'Nome do Navio': 'RICARDO BARBOSA',
+        'Classe': 'Gaseiro 7k',
+        'Tipo': 'Gaseiro',
+        'Porte Bruto': '5079 DWT',
+        'Comprimento total(m)': '117.63 m',
+        'Boca (m)': '19.2 m',
+        'Calado (m)': '5.8 m',
+        'Pontal (m)': '9.25 m',
+        'foulingIndex': 40, // Cuidado
+        'simulatedWaterTemp': 24.0, 
+        'simulatedHullRoughness': 120, 
+        'imageUrl': 'image1.png'
+    },
+    {
+        'Nome do Navio': 'BRUNO LIMA',
+        'Classe': 'Gaseiro 7k',
+        'Tipo': 'Gaseiro',
+        'Porte Bruto': '5095 DWT',
+        'Comprimento total(m)': '117.63 m',
+        'Boca (m)': '19.2 m',
+        'Calado (m)': '5.8 m',
+        'Pontal (m)': '9.25 m',
+        'foulingIndex': 20, // Ótimo
+        'simulatedWaterTemp': 23.0, 
+        'simulatedHullRoughness': 80, 
+        'imageUrl': 'image2.png'
+    },
+    {
+        'Nome do Navio': 'FÁBIO SANTOS',
+        'Classe': 'Gaseiro 7k',
+        'Tipo': 'Gaseiro',
+        'Porte Bruto': '5092 DWT',
+        'Comprimento total(m)': '117.63 m',
+        'Boca (m)': '19.2 m',
+        'Calado (m)': '5.8 m',
+        'Pontal (m)': '9.25 m',
+        'foulingIndex': 65, // Cuidado
+        'simulatedWaterTemp': 25.5, 
+        'simulatedHullRoughness': 300, 
+        'imageUrl': 'image3.png'
+    },
+    {
+        'Nome do Navio': 'MARIA VALENTINA',
+        'Classe': 'Gaseiro 7k',
+        'Tipo': 'Gaseiro',
+        'Porte Bruto': '5097 DWT',
+        'Comprimento total(m)': '117.63 m',
+        'Boca (m)': '19.2 m',
+        'Calado (m)': '5.8 m',
+        'Pontal (m)': '9.25 m',
+        'foulingIndex': 15, // Ótimo
+        'simulatedWaterTemp': 22.5, 
+        'simulatedHullRoughness': 50, 
+        'imageUrl': 'image2.png'
+    }
+];
+
+// ... o restante do seu código JavaScript continua aqui (terminalData, funções e inicialização)
     
     // Dados do Terminal de Emergência (Angra dos Reis)
     const terminalData = {
