@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
             'foulingIndex': 20, // Ótimo (Verde)
             'simulatedWaterTemp': 22.5, // °C
             'simulatedHullRoughness': 100, // µm
-            'imageUrl': 'image2.png' // Imagem para o navio verde
+            'imageUrl': 'image2.png'
         },
         {
             'Nome do Navio': 'Mariner Voyager',
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
             'foulingIndex': 55, // Cuidado (Amarelo)
             'simulatedWaterTemp': 28.0, 
             'simulatedHullRoughness': 250, // µm
-            'imageUrl': 'image3.png' // Imagem para o navio amarelo
+            'imageUrl': 'image3.png'
         },
         {
             'Nome do Navio': 'Global Tanker VII',
@@ -41,9 +41,25 @@ document.addEventListener('DOMContentLoaded', () => {
             'foulingIndex': 85, // Urgência (Vermelho)
             'simulatedWaterTemp': 30.5, 
             'simulatedHullRoughness': 450, // µm
-            'imageUrl': 'image1.png' // Imagem para o navio vermelho
+            'imageUrl': 'image1.png'
         }
     ];
+    
+    // NOVO: Dados do Terminal de Emergência (Angra dos Reis)
+    const terminalData = {
+        'Endereço': 'Rodovia Governador Mário Covas km 471',
+        'CEP': '23.905-000',
+        'Cidade': 'Jacuecanga - Angra dos Reis/RJ',
+        'Produtos': [
+            { Tipo: 'Petróleo/Derivados', Quantidade: 105, Capacidade: '845.557 m³' },
+            { Tipo: 'Álcool e Biodiesel', Quantidade: null, Capacidade: '132.489 m³' }
+        ],
+        'Atracacao': [
+            { Pier: 'Pier 1', Calado: '25 m', LOA: '516 m', PorteBruto: '500.000 t' },
+            { Pier: 'Pier 2', Calado: '25 m', LOA: '516 m', PorteBruto: '500.000 t' }
+        ]
+    };
+
 
     // 2. Elementos do Dashboard
     const shipSelector = document.getElementById('ship-selector');
@@ -58,9 +74,34 @@ document.addEventListener('DOMContentLoaded', () => {
     const hullRoughnessSpan = document.getElementById('hull-roughness');
     const shipDataTable = document.getElementById('ship-data-table');
     const shipTitle = document.getElementById('ship-title');
-    const shipImage = document.getElementById('ship-image'); // Novo elemento de imagem
+    const shipImage = document.getElementById('ship-image');
     
     // --- Funções de Análise e Renderização ---
+
+    // Função auxiliar para gerar a tabela de atracação
+    function createAtracacaoTable(data) {
+        let html = '<p>Pontos de Atracação para Urgência:</p>';
+        html += '<table class="atracacao-table"><thead><tr>';
+        
+        // Cabeçalho
+        const headers = ['Pier', 'Calado (m)', 'LOA (m)', 'Porte Bruto (t)'];
+        headers.forEach(h => html += `<th>${h}</th>`);
+        html += '</tr></thead><tbody>';
+        
+        // Linhas
+        data.forEach(item => {
+            html += '<tr>';
+            html += `<td>${item.Pier}</td>`;
+            html += `<td>${item.Calado}</td>`;
+            html += `<td>${item.LOA}</td>`;
+            html += `<td>${item.PorteBruto}</td>`;
+            html += '</tr>';
+        });
+        
+        html += '</tbody></table>';
+        return html;
+    }
+
 
     function getShipAnalysis(ship) {
         const foulingIndex = ship.foulingIndex;
@@ -73,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let urgentTime = 0;
         let message = '';
         let statusClass = '';
-        let actionHtml = '';
+        let actionHtml = ''; 
 
         if (foulingIndex < 35) { // Verde: Ótimo
             status = 'ÓTIMO';
@@ -81,28 +122,42 @@ document.addEventListener('DOMContentLoaded', () => {
             statusClass = 'status-green';
             careTime = 2.5;
             urgentTime = 4.5;
-            message = `🎉 Muito bem! O navio está em um estado Ótimo. Com base nos dados, temos aproximadamente ${careTime.toFixed(1)} meses para ele entrar no estado de Cuidado (Amarelo) e ${urgentTime.toFixed(1)} meses para Urgência (Vermelho).`;
+            message = `🎉 Muito bem! O navio está em um estado **ótimo**. Com base nos dados, temos aproximadamente **${careTime.toFixed(1)} meses** para ele entrar no estado de Cuidado (Amarelo) e **${urgentTime.toFixed(1)} meses** para Urgência (Vermelho).`;
         } else if (foulingIndex < 70) { // Amarelo: Cuidado
             status = 'CUIDADO';
             needleAngle = 0; 
             statusClass = 'status-yellow';
             careTime = 0.5;
             urgentTime = 2.0;
-            message = `⚠️ Atenção! O navio está no estado de Cuidado. Recomenda-se o planejamento de inspeção. Faltam aproximadamente ${urgentTime.toFixed(1)} meses para atingir o estado de Urgência.`;
+            message = `⚠️ Atenção! O navio está no estado de **Cuidado**. Recomenda-se o planejamento de inspeção. Faltam aproximadamente **${urgentTime.toFixed(1)} meses** para atingir o estado de Urgência.`;
             actionHtml = `
                 <span>Que tal agendar uma avaliação?</span>
                 <button class="action-btn yellow-btn">Agendar Avaliação</button>
             `;
-        } else { // Vermelho: Urgência
+        } else { // Vermelho: Urgência - Lógica de Escalamento + Detalhes do Porto
             status = 'URGÊNCIA';
             needleAngle = -135; 
             statusClass = 'status-red';
             careTime = 0;
             urgentTime = 0.25;
-            message = `🚨 CRÍTICO! O navio está no estado de URGÊNCIA. É necessária uma intervenção imediata para limpeza do casco, evitando perda significativa de eficiência, aumento de consumo de combustível e pagamento de multa.`;
+            message = `🚨 CRÍTICO! O navio está no estado de **URGÊNCIA**. É necessária uma intervenção imediata para limpeza do casco, evitando perda significativa de eficiência e aumento de consumo de combustível.`;
+            
+            // CONSTRUÇÃO DO HTML DE ESCALONAMENTO E DADOS DO TERMINAL
+            const atracacaoTable = createAtracacaoTable(terminalData.Atracacao);
+            
             actionHtml = `
-                <span>Necessário Escalonamento Urgente do Caso.</span>
-                <button class="action-btn red-btn">Escalonar</button>
+                <div class="escalation-block">
+                    <span>Necessário **Escalamento Urgente** do Caso.</span>
+                    <button class="action-btn red-btn">ESCALONAMENTO</button>
+                </div>
+                <div class="terminal-details">
+                    <h3>📍 Terminal de Apoio (Emergência)</h3>
+                    <p><strong>Endereço:</strong> ${terminalData.Endereço}<br>
+                    <strong>CEP:</strong> ${terminalData.CEP}<br>
+                    <strong>Local:</strong> ${terminalData.Cidade}</p>
+                    ${atracacaoTable}
+                    <p class="small-info">Capacidade de Estocagem: ${terminalData.Produtos[0].Capacidade} (Petróleo/Derivados)</p>
+                </div>
             `;
         }
         
@@ -116,10 +171,11 @@ document.addEventListener('DOMContentLoaded', () => {
             actionHtml,
             simulatedWaterTemp,
             simulatedHullRoughness,
-            imageUrl: ship.imageUrl // Retorna a URL da imagem
+            imageUrl: ship.imageUrl
         };
     }
     
+    // ... (restante das funções populateShipTable, renderDashboard e inicialização)
     function populateShipTable(shipData) {
         let html = '<thead><tr>';
         let valuesHtml = '<tbody><tr>';
@@ -162,7 +218,8 @@ document.addEventListener('DOMContentLoaded', () => {
         
         populateShipTable(ship);
         
-        // NOVO: Atualiza a imagem do navio
+        // Atualiza a imagem do navio
+        const shipImage = document.getElementById('ship-image');
         shipImage.src = analysis.imageUrl;
         shipImage.alt = `Desenho do navio ${ship['Nome do Navio']} no estado ${analysis.status}`;
     }
