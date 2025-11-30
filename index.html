@@ -20,6 +20,25 @@
             max-width: 400px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
+        /* NOVO: Estilos para o contêiner do gráfico e imagem */
+        .gauge-image-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px; /* Espaço entre o gauge e a imagem */
+            margin-bottom: 20px;
+            flex-wrap: wrap; /* Para quebra de linha em telas pequenas */
+        }
+        #ship-image {
+            max-width: 250px; /* Ajuste o tamanho conforme necessário */
+            height: auto;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        .thermometer-gauge {
+            margin-bottom: 0; /* Remove a margem inferior para se alinhar com o contêiner flex */
+        }
     </style>
 </head>
 <body>
@@ -43,12 +62,16 @@
         <section class="dashboard-container">
             <div class="card analysis-card">
                 <h2>📈 Análise Atual</h2>
-                <div class="thermometer-gauge">
-                    <div id="gauge-ring" class="gauge-ring">
-                        <div id="gauge-needle" class="gauge-needle"></div>
+                
+                <div class="gauge-image-container">
+                    <div class="thermometer-gauge">
+                        <div id="gauge-ring" class="gauge-ring">
+                            <div id="gauge-needle" class="gauge-needle"></div>
+                        </div>
+                        <div id="status-text" class="status-text"></div>
+                        <p class="status-label">Estado Atual do Casco</p>
                     </div>
-                    <div id="status-text" class="status-text"></div>
-                    <p class="status-label">Estado Atual do Casco</p>
+                    <img id="ship-image" src="" alt="Desenho do navio">
                 </div>
                 
                 <div class="sensor-data">

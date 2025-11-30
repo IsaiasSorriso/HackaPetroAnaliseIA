@@ -12,11 +12,12 @@ document.addEventListener('DOMContentLoaded', () => {
             'Pontal (m)': '18.0 m',
             'foulingIndex': 20, // Ótimo (Verde)
             'simulatedWaterTemp': 22.5, // °C
-            'simulatedHullRoughness': 100 // µm
+            'simulatedHullRoughness': 100, // µm
+            'imageUrl': 'image2.png' // Imagem para o navio verde
         },
         {
             'Nome do Navio': 'Mariner Voyager',
-            'Classe': 'Capesize',
+            'Classe': 'Aframax',
             'Tipo': 'Minério',
             'Porte Bruto': '180,000 DWT',
             'Comprimento total(m)': '290.0 m',
@@ -25,7 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
             'Pontal (m)': '22.0 m',
             'foulingIndex': 55, // Cuidado (Amarelo)
             'simulatedWaterTemp': 28.0, 
-            'simulatedHullRoughness': 250 // µm
+            'simulatedHullRoughness': 250, // µm
+            'imageUrl': 'image3.png' // Imagem para o navio amarelo
         },
         {
             'Nome do Navio': 'Global Tanker VII',
@@ -38,7 +40,8 @@ document.addEventListener('DOMContentLoaded', () => {
             'Pontal (m)': '20.0 m',
             'foulingIndex': 85, // Urgência (Vermelho)
             'simulatedWaterTemp': 30.5, 
-            'simulatedHullRoughness': 450 // µm
+            'simulatedHullRoughness': 450, // µm
+            'imageUrl': 'image1.png' // Imagem para o navio vermelho
         }
     ];
 
@@ -48,17 +51,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const gaugeNeedle = document.getElementById('gauge-needle');
     const statusText = document.getElementById('status-text');
     const predictionMessage = document.getElementById('prediction-message');
-    const actionArea = document.getElementById('action-area'); // Novo elemento
+    const actionArea = document.getElementById('action-area');
     const timeToCare = document.getElementById('time-to-care');
     const timeToUrgent = document.getElementById('time-to-urgent');
     const waterTempSpan = document.getElementById('water-temp');
     const hullRoughnessSpan = document.getElementById('hull-roughness');
     const shipDataTable = document.getElementById('ship-data-table');
     const shipTitle = document.getElementById('ship-title');
+    const shipImage = document.getElementById('ship-image'); // Novo elemento de imagem
     
     // --- Funções de Análise e Renderização ---
 
-    // Função que aplica a lógica de estado e gera a mensagem/dados
     function getShipAnalysis(ship) {
         const foulingIndex = ship.foulingIndex;
         const simulatedWaterTemp = ship.simulatedWaterTemp;
@@ -70,9 +73,8 @@ document.addEventListener('DOMContentLoaded', () => {
         let urgentTime = 0;
         let message = '';
         let statusClass = '';
-        let actionHtml = ''; // Conteúdo HTML para o botão de ação
+        let actionHtml = '';
 
-        // Lógica de Estado (Termômetro)
         if (foulingIndex < 35) { // Verde: Ótimo
             status = 'ÓTIMO';
             needleAngle = 135; 
@@ -87,7 +89,6 @@ document.addEventListener('DOMContentLoaded', () => {
             careTime = 0.5;
             urgentTime = 2.0;
             message = `⚠️ Atenção! O navio está no estado de **Cuidado**. Recomenda-se o planejamento de inspeção. Faltam aproximadamente **${urgentTime.toFixed(1)} meses** para atingir o estado de Urgência.`;
-            // Ação para CUIDADO (Amarelo)
             actionHtml = `
                 <span>Que tal agendar uma avaliação?</span>
                 <button class="action-btn yellow-btn">Agendar Avaliação</button>
@@ -99,7 +100,6 @@ document.addEventListener('DOMContentLoaded', () => {
             careTime = 0;
             urgentTime = 0.25;
             message = `🚨 CRÍTICO! O navio está no estado de **URGÊNCIA**. É necessária uma intervenção imediata para limpeza do casco, evitando perda significativa de eficiência e aumento de consumo de combustível.`;
-            // Ação para URGÊNCIA (Vermelho)
             actionHtml = `
                 <span>Entre em contato urgente com a equipe de remoção de cracas!</span>
                 <button class="action-btn red-btn">Contato Urgente</button>
@@ -113,18 +113,19 @@ document.addEventListener('DOMContentLoaded', () => {
             careTime,
             urgentTime,
             message,
-            actionHtml, // Adicionado o novo HTML
+            actionHtml,
             simulatedWaterTemp,
-            simulatedHullRoughness
+            simulatedHullRoughness,
+            imageUrl: ship.imageUrl // Retorna a URL da imagem
         };
     }
     
-    // Função para popular a tabela de dados do navio (mantida)
     function populateShipTable(shipData) {
         let html = '<thead><tr>';
         let valuesHtml = '<tbody><tr>';
         
-        const keysToSkip = ['foulingIndex', 'simulatedWaterTemp', 'simulatedHullRoughness'];
+        // Exclui as chaves de análise e imagem da tabela de dados
+        const keysToSkip = ['foulingIndex', 'simulatedWaterTemp', 'simulatedHullRoughness', 'imageUrl'];
         
         for (const key in shipData) {
             if (!keysToSkip.includes(key)) {
@@ -140,40 +141,34 @@ document.addEventListener('DOMContentLoaded', () => {
         shipTitle.textContent = `⚓ Dados do Navio: ${shipData['Nome do Navio']}`;
     }
 
-    // Função para atualizar o dashboard completo
     function renderDashboard(ship) {
         const analysis = getShipAnalysis(ship);
 
-        // 5. Atualiza o Dashboard na UI
-        
-        // Atualiza anel e ponteiro
         gaugeRing.className = 'gauge-ring'; 
         gaugeRing.classList.add(analysis.statusClass);
         gaugeNeedle.style.transform = `rotate(${analysis.needleAngle}deg) translate(0, -60px)`;
         
-        // Atualiza textos de status e mensagem
         statusText.textContent = analysis.status;
         statusText.style.color = analysis.statusClass === 'status-green' ? '#28a745' : analysis.statusClass === 'status-yellow' ? '#ffc107' : '#dc3545';
         predictionMessage.innerHTML = analysis.message;
         
-        // NOVO: Atualiza a área de ação/contato
         actionArea.innerHTML = analysis.actionHtml;
         
-        // Atualiza os tempos de previsão
         timeToCare.textContent = analysis.careTime > 0 ? `${analysis.careTime.toFixed(1)} meses` : 'IMEDIATO';
         timeToUrgent.textContent = analysis.urgentTime > 0 ? `${analysis.urgentTime.toFixed(1)} meses` : 'AGORA';
         
-        // Atualiza os dados de sensores na UI
         waterTempSpan.textContent = analysis.simulatedWaterTemp.toFixed(1);
         hullRoughnessSpan.textContent = analysis.simulatedHullRoughness;
         
-        // Atualiza a tabela de dados do navio
         populateShipTable(ship);
+        
+        // NOVO: Atualiza a imagem do navio
+        shipImage.src = analysis.imageUrl;
+        shipImage.alt = `Desenho do navio ${ship['Nome do Navio']} no estado ${analysis.status}`;
     }
 
-    // --- Inicialização e Eventos (mantidos) ---
+    // --- Inicialização e Eventos ---
 
-    // Popula o seletor de navios
     shipsData.forEach((ship, index) => {
         const option = document.createElement('option');
         option.value = index;
@@ -181,7 +176,6 @@ document.addEventListener('DOMContentLoaded', () => {
         shipSelector.appendChild(option);
     });
 
-    // Evento de mudança no seletor
     shipSelector.addEventListener('change', (event) => {
         const selectedIndex = parseInt(event.target.value);
         const selectedShip = shipsData[selectedIndex];
@@ -190,7 +184,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Inicializa a aplicação com o primeiro navio
     const initialShip = shipsData[0];
     if (initialShip) {
         renderDashboard(initialShip);
