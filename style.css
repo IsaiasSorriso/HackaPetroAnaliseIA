@@ -282,8 +282,7 @@ footer {
 }
 
 .terminal-details {
-    background-color: #fcebeb; /* Fundo vermelho claro para Urgência */
-    border: 1px solid #dc3545;
+    background-color: #e7e6e6; 
     border-radius: 8px;
     padding: 15px;
     margin-top: 10px;
@@ -291,7 +290,7 @@ footer {
 }
 
 .terminal-details h3 {
-    color: #dc3545;
+    color: #383838;
     margin-top: 0;
     font-size: 1.1em;
 }
@@ -321,4 +320,25 @@ footer {
     font-style: italic;
     color: #666;
     margin-top: 10px;
+}
+
+/* Estilos para o Termômetro/Gauge */
+/* ... (Seção existente do gauge-ring) ... */
+
+/* NOVO: Estilo para a porcentagem no centro do Gauge */
+.fouling-percentage {
+    position: absolute;
+    font-size: 1.8em; /* Tamanho do texto da porcentagem */
+    font-weight: 900;
+    color: #333; /* Cor neutra ou que combine com seu tema */
+    z-index: 3; /* Fica acima da agulha */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Garante centralização perfeita */
+}
+
+/* Garante que o texto de status fique abaixo e não atrapalhe a porcentagem */
+.status-text {
+    /* ... (manter estilos existentes) ... */
+    margin-top: 25px; /* Aumentar margem para não sobrepor a porcentagem */
 }

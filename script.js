@@ -10,10 +10,10 @@ document.addEventListener('DOMContentLoaded', () => {
             'Boca (m)': '32.3 m',
             'Calado (m)': '14.0 m',
             'Pontal (m)': '18.0 m',
-            'foulingIndex': 20, // Ótimo (Verde)
+            'foulingIndex': 20, // Ótimo (Verde) -> 20%
             'simulatedWaterTemp': 22.5, // °C
             'simulatedHullRoughness': 100, // µm
-            'imageUrl': 'image2.png'
+            'imageUrl': 'image2.png' // Nome de arquivo que você confirmou
         },
         {
             'Nome do Navio': 'Mariner Voyager',
@@ -24,10 +24,10 @@ document.addEventListener('DOMContentLoaded', () => {
             'Boca (m)': '45.0 m',
             'Calado (m)': '17.0 m',
             'Pontal (m)': '22.0 m',
-            'foulingIndex': 55, // Cuidado (Amarelo)
+            'foulingIndex': 55, // Cuidado (Amarelo) -> 55%
             'simulatedWaterTemp': 28.0, 
             'simulatedHullRoughness': 250, // µm
-            'imageUrl': 'image3.png'
+            'imageUrl': 'image3.png' // Nome de arquivo que você confirmou
         },
         {
             'Nome do Navio': 'Global Tanker VII',
@@ -38,14 +38,14 @@ document.addEventListener('DOMContentLoaded', () => {
             'Boca (m)': '48.0 m',
             'Calado (m)': '16.0 m',
             'Pontal (m)': '20.0 m',
-            'foulingIndex': 85, // Urgência (Vermelho)
+            'foulingIndex': 85, // Urgência (Vermelho) -> 85%
             'simulatedWaterTemp': 30.5, 
             'simulatedHullRoughness': 450, // µm
-            'imageUrl': 'image1.png'
+            'imageUrl': 'image1.png' // Nome de arquivo que você confirmou
         }
     ];
     
-    // NOVO: Dados do Terminal de Emergência (Angra dos Reis)
+    // Dados do Terminal de Emergência (Angra dos Reis)
     const terminalData = {
         'Endereço': 'Rodovia Governador Mário Covas km 471',
         'CEP': '23.905-000',
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
 
-    // 2. Elementos do Dashboard
+    // 2. Elementos do Dashboard (CONSTANTES FALTANTES ADICIONADAS AQUI)
     const shipSelector = document.getElementById('ship-selector');
     const gaugeRing = document.getElementById('gauge-ring');
     const gaugeNeedle = document.getElementById('gauge-needle');
@@ -72,11 +72,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const timeToUrgent = document.getElementById('time-to-urgent');
     const waterTempSpan = document.getElementById('water-temp');
     const hullRoughnessSpan = document.getElementById('hull-roughness');
+    
+    // CONSTANTES QUE VOCÊ NOTOU QUE FALTAVAM AQUI:
     const shipDataTable = document.getElementById('ship-data-table');
     const shipTitle = document.getElementById('ship-title');
     const shipImage = document.getElementById('ship-image');
     
-    // --- Funções de Análise e Renderização ---
+    const foulingPercentageDisplay = document.getElementById('fouling-percentage'); 
 
     // Função auxiliar para gerar a tabela de atracação
     function createAtracacaoTable(data) {
@@ -102,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return html;
     }
 
-
+    // Função principal de análise
     function getShipAnalysis(ship) {
         const foulingIndex = ship.foulingIndex;
         const simulatedWaterTemp = ship.simulatedWaterTemp;
@@ -115,21 +117,25 @@ document.addEventListener('DOMContentLoaded', () => {
         let message = '';
         let statusClass = '';
         let actionHtml = ''; 
+        let predictedGrowth = 0; // Porcentagem de crescimento simulado
 
+        // Lógica de Estado (Termômetro)
         if (foulingIndex < 35) { // Verde: Ótimo
             status = 'ÓTIMO';
             needleAngle = 135; 
             statusClass = 'status-green';
             careTime = 2.5;
             urgentTime = 4.5;
-            message = `🎉 Muito bem! O navio está em um estado Ótimo. Com base nos dados, temos aproximadamente ${careTime.toFixed(1)} meses para ele entrar no estado de Cuidado (Amarelo) e ${urgentTime.toFixed(1)} meses para Urgência (Vermelho).`;
+            predictedGrowth = 5; 
+            message = `🎉 Muito bem! O navio tem ${foulingIndex}% de incrustação. Mantendo as condições atuais, a previsão é que essa taxa aumente em cerca de ${predictedGrowth}% em 1 mês, e temos aproximadamente ${careTime.toFixed(1)} meses para ele entrar no estado de Cuidado (Amarelo) e ${urgentTime.toFixed(1)} meses para Urgência (Vermelho).`;
         } else if (foulingIndex < 70) { // Amarelo: Cuidado
             status = 'CUIDADO';
             needleAngle = 0; 
             statusClass = 'status-yellow';
             careTime = 0.5;
             urgentTime = 2.0;
-            message = `⚠️ Atenção! O navio está no estado de Cuidado. Recomenda-se o planejamento de inspeção. Faltam aproximadamente ${urgentTime.toFixed(1)} meses para atingir o estado de Urgência.`;
+            predictedGrowth = 15; 
+            message = `⚠️ Atenção! O navio tem ${foulingIndex}% de incrustação. Recomenda-se o planejamento de inspeção. Mantendo as condições atuais, a previsão é que essa taxa aumente em cerca de ${predictedGrowth}% em 1 mês, e faltam aproximadamente ${urgentTime.toFixed(1)} meses para atingir o estado de Urgência.`;
             actionHtml = `
                 <span>Que tal agendar uma avaliação?</span>
                 <button class="action-btn yellow-btn">Agendar Avaliação</button>
@@ -140,9 +146,9 @@ document.addEventListener('DOMContentLoaded', () => {
             statusClass = 'status-red';
             careTime = 0;
             urgentTime = 0.25;
-            message = `🚨 CRÍTICO! O navio está no estado de URGÊNCIA. É necessária uma intervenção imediata para limpeza do casco, evitando perda significativa de eficiência e aumento de consumo de combustível.`;
+            predictedGrowth = 25; 
+            message = `🚨 CRÍTICO! O navio atingiu ${foulingIndex}% de incrustação. É necessária uma intervenção imediata. Se nenhuma ação for tomada, a previsão é que a incrustação aumente em ${predictedGrowth}% em 1 mês, causando perda significativa de eficiência e aumento de consumo de combustível.`;
             
-            // CONSTRUÇÃO DO HTML DE ESCALONAMENTO E DADOS DO TERMINAL
             const atracacaoTable = createAtracacaoTable(terminalData.Atracacao);
             
             actionHtml = `
@@ -171,16 +177,16 @@ document.addEventListener('DOMContentLoaded', () => {
             actionHtml,
             simulatedWaterTemp,
             simulatedHullRoughness,
-            imageUrl: ship.imageUrl
+            imageUrl: ship.imageUrl,
+            foulingIndex
         };
     }
     
-    // ... (restante das funções populateShipTable, renderDashboard e inicialização)
+    // Função para popular a tabela de dados do navio (ESSENCIAL PARA USAR shipDataTable e shipTitle)
     function populateShipTable(shipData) {
         let html = '<thead><tr>';
         let valuesHtml = '<tbody><tr>';
         
-        // Exclui as chaves de análise e imagem da tabela de dados
         const keysToSkip = ['foulingIndex', 'simulatedWaterTemp', 'simulatedHullRoughness', 'imageUrl'];
         
         for (const key in shipData) {
@@ -197,12 +203,19 @@ document.addEventListener('DOMContentLoaded', () => {
         shipTitle.textContent = `⚓ Dados do Navio: ${shipData['Nome do Navio']}`;
     }
 
+    // Função para atualizar o dashboard completo
     function renderDashboard(ship) {
         const analysis = getShipAnalysis(ship);
 
+        // Atualiza anel e ponteiro
         gaugeRing.className = 'gauge-ring'; 
         gaugeRing.classList.add(analysis.statusClass);
         gaugeNeedle.style.transform = `rotate(${analysis.needleAngle}deg) translate(0, -60px)`;
+        
+        // Atualiza a porcentagem no centro do gauge (usa foulingPercentageDisplay)
+        if (foulingPercentageDisplay) {
+            foulingPercentageDisplay.textContent = `${analysis.foulingIndex}%`;
+        }
         
         statusText.textContent = analysis.status;
         statusText.style.color = analysis.statusClass === 'status-green' ? '#28a745' : analysis.statusClass === 'status-yellow' ? '#ffc107' : '#dc3545';
@@ -216,16 +229,17 @@ document.addEventListener('DOMContentLoaded', () => {
         waterTempSpan.textContent = analysis.simulatedWaterTemp.toFixed(1);
         hullRoughnessSpan.textContent = analysis.simulatedHullRoughness;
         
+        // Usa shipDataTable e shipTitle
         populateShipTable(ship);
         
-        // Atualiza a imagem do navio
-        const shipImage = document.getElementById('ship-image');
+        // Usa shipImage
         shipImage.src = analysis.imageUrl;
         shipImage.alt = `Desenho do navio ${ship['Nome do Navio']} no estado ${analysis.status}`;
     }
 
     // --- Inicialização e Eventos ---
 
+    // Popula o seletor de navios
     shipsData.forEach((ship, index) => {
         const option = document.createElement('option');
         option.value = index;
@@ -233,6 +247,7 @@ document.addEventListener('DOMContentLoaded', () => {
         shipSelector.appendChild(option);
     });
 
+    // Evento de mudança no seletor
     shipSelector.addEventListener('change', (event) => {
         const selectedIndex = parseInt(event.target.value);
         const selectedShip = shipsData[selectedIndex];
@@ -241,6 +256,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Inicializa a aplicação com o primeiro navio
     const initialShip = shipsData[0];
     if (initialShip) {
         renderDashboard(initialShip);
