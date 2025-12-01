@@ -342,3 +342,18 @@ footer {
     /* ... (manter estilos existentes) ... */
     margin-top: 25px; /* Aumentar margem para não sobrepor a porcentagem */
 }
+
+.bom{
+    color: #28a745;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.ruim{
+    color: #e41b1b;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.medio{
+    color: #ecbe36;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}

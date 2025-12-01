@@ -412,7 +412,7 @@ const shipsData = [
                     <button class="action-btn red-btn">ESCALONAMENTO</button>
                 </div>
                 <div class="terminal-details">
-                    <h3>📍 Terminal de Apoio (Emergência)</h3>
+                    <h3>📍 Terminal de Apoio</h3>
                     <p><strong>Endereço:</strong> ${terminalData.Endereço}<br>
                     <strong>CEP:</strong> ${terminalData.CEP}<br>
                     <strong>Local:</strong> ${terminalData.Cidade}</p>
